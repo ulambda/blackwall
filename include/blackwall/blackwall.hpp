@@ -3,8 +3,7 @@
 
 #include "tenser.hpp"
 #include "model.hpp"
-#include "neuralnetwork.hpp"
 
-namespace blackwall {}
+namespace BLKW {}
 
 #endif // BLACKWALL_HPP
