@@ -1,13 +1,26 @@
 #ifndef TENSER_HPP
 #define TENSER_HPP
 
-namespace BLKW{
-    class Tenser{
-        public:
-            Tenser(); //default constructor
-            //Tenser(const Tenser *); //copy constructor
+#include <vector>
 
-            int data;
+namespace BLKW{
+    template <class T>
+    class Tenser{
+        private:
+            int dimensions[];
+            std::vector<T> data;
+        
+            
+        public:
+            Tenser();
+            Tenser(const Tenser *other); //copy constructor
+            
+            static Tenser zeros(int dimensions[]); 
+            static Tenser ones(int dimensions[]);
+
+
+
+
 
             
 
