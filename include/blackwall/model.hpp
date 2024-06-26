@@ -10,7 +10,7 @@ namespace BLKW {
     class Model{
         public:
             virtual void train(Tenser<double> training_set) = 0; //trains the model on the inputed test set
-            virtual void feed(Tenser<double> input) = 0; //accepts a data instances and produces an output using the model
+            virtual Tenser<double> feed(Tenser<double> input) = 0; //accepts a data instances and produces an output using the model
             virtual void test(Tenser<double> training_set) = 0; //tests the accuracy of the model using a test set
         protected:
     };
