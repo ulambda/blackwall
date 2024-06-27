@@ -11,12 +11,10 @@ namespace BLKW {
         public:
             struct Layer{
                 int size;
-                Neuron* neurons;
+                Neuron *neurons;
+                Layer *next = nullptr;
+                Layer *previous = nullptr;
             };
-
-            Layer input_layer;
-            std::vector<Layer> hidden_layers;
-            Layer output_layer;
 
             struct {
                 int epochs;
@@ -25,7 +23,9 @@ namespace BLKW {
             } hyperparams;
 
         private:
-
+            Layer input_layer;
+            std::vector<Layer> hidden_layers;
+            Layer output_layer;
 
         public: 
             /**
@@ -42,7 +42,6 @@ namespace BLKW {
 
             double* feed_forward(double inputs[]);
             void print();
-            void export_params();
     };
 }
 
