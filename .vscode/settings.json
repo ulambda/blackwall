@@ -111,6 +111,7 @@
     "optional": "cpp",
     "numbers": "cpp",
     "text_encoding": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "iomanip": "cpp"
   }
 }

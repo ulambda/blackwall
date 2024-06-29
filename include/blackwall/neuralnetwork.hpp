@@ -13,7 +13,7 @@ namespace BLKW {
                 int size;
                 Neuron *neurons;
                 Layer *next = nullptr;
-                Layer *previous = nullptr;
+                Layer *prev = nullptr;
             };
 
             struct {
@@ -35,13 +35,23 @@ namespace BLKW {
              * @param output_size number of neurons in the output layer
              */
             NeuralNetwork(int input_size, std::initializer_list<int> hidden_sizes, int output_size);
+            ~NeuralNetwork();  
 
+            /**
+             * @brief prints the weights and biases of each the neurons in the network by layer
+             */     
+            void print();
+
+            int output_size() { return output_layer.size; }
+            
+
+
+            double* feed_forward(double inputs[]);
+
+            
             void train(Tenser<double> training_set);
             Tenser<double> feed(Tenser<double> input);
             void test(Tenser<double> training_set);
-
-            double* feed_forward(double inputs[]);
-            void print();
     };
 }
 

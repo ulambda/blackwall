@@ -4,7 +4,9 @@
 
 #define PRINT(X) std::cout<<X<<std::endl;
 
-void test_1(){
+
+
+int main(void){
     double input[] = {2};
     double iw[] = {1};
     BLKW::Neuron ni(1, iw, 0, BLKW::ActivationFunction::identity);
@@ -27,11 +29,6 @@ void test_1(){
     BLKW::Neuron no(3, ow, 0, BLKW::ActivationFunction::identity);
     double noo = no.output(new double[3]{nh1o, nh2o, nh3o});
     PRINT(noo);
-
-    std::cout<<"hello world"<<std::endl;
-}
-
-int main(void){
-    test_1();
+    //std::cout<<"hello world"<<std::endl;
     return 0;
 }

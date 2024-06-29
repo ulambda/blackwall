@@ -4,22 +4,30 @@
 #include <vector>
 #include <initializer_list> // Add this line
 #include <random> // Add this line
-#include <variant>
 
 namespace BLKW{
     template <class T>
     class Tenser{
+
+
+
         private:
-            int dimensions[3];
-            std::vector<T> data;
+            std::vector<int> dimensions; // Change int dimensions[] to std::vector<int> dimensions
+            T* data;
+            
+
+
         public:
             Tenser();
-            Tenser(std::initializer_list<int> dimensions);
+            Tenser(std::initializer_list<int> dimensions){
+
+            }
             Tenser(const Tenser *other);
             
             static Tenser zeros(std::initializer_list<int> dimensions); 
             static Tenser ones(std::initializer_list<int> dimensions);
             static Tenser random(std::initializer_list<int> dimensions);
+
     };
 }
 
