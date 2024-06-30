@@ -90,7 +90,7 @@ namespace BLKW{
 
 
     void NeuralNetwork::train(Tenser<double> training_set){}
-    Tenser<double> NeuralNetwork::feed(Tenser<double> input){ return Tenser<double>({2,2}); }
+    Tenser<double> NeuralNetwork::feed(Tenser<double> input){ return Tenser<double>::defaults({2,2}); }
     void NeuralNetwork::test(Tenser<double> training_set){}
 }
     
