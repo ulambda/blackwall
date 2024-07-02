@@ -1,5 +1,6 @@
 #include "../include/blackwall/neuralnetwork.hpp"
-#include "../include/blackwall/neuron.hpp" // Include the header file that defines the Neuron class
+#include "../include/blackwall/neuron.hpp"
+#include "../include/blackwall/tenser.hpp"
 #include <iostream>
 
 namespace BLKW{
@@ -40,7 +41,16 @@ namespace BLKW{
     }
 
     NeuralNetwork::~NeuralNetwork(){
+        Layer *current_layer = &input_layer;
+        Layer *next_layer = current_layer->next;
+        while(current_layer != nullptr){
+            delete[] current_layer->neurons;
+            delete current_layer;
+            current_layer = next_layer;
+            if(next_layer != nullptr)
+                next_layer = next_layer->next;
 
+        }
     }
 
 
@@ -67,9 +77,13 @@ namespace BLKW{
 
     }
 
+    int NeuralNetwork::output_size(){
+        return output_layer.size;
+    }
 
 
-    double* NeuralNetwork::feed_forward(double inputs[]){
+
+    double* NeuralNetwork::feed(double inputs[]){
         Layer *current_layer = &input_layer; // Declare and initialize the input_layer variable
     
         double *current_inputs = inputs;
@@ -87,10 +101,30 @@ namespace BLKW{
         return current_outputs;
     }
 
+    Tenser<double> NeuralNetwork::feed(const Tenser<double>& input){ 
+        if(input.depth() != 1 || input.size() != input_layer.size)
+            throw std::runtime_error("Invalid input dimensions");
+
+        Layer* layer = &input_layer;
+        Tenser<double> inputs(input);
+        Tenser<double> outputs = Tenser<double>({layer->size});
+        while(layer != nullptr){
+            for(int i = 0 ; i < layer->size ; i++)
+                (*outputs[{i}]) = layer->neurons[i].output(inputs[{i}]);
+                //outputs.replace({i}, layer->neurons[i].output(inputs[{i}]));
+            inputs = outputs;
+            layer = layer->next;
+        }
+        return outputs;
+    }
+
+    void NeuralNetwork::train(const double* train_X[], const double* train_y[]){
+        
+    }
+
+    void NeuralNetwork::train(const Tenser<double>& training_set){}
 
 
-    void NeuralNetwork::train(Tenser<double> training_set){}
-    Tenser<double> NeuralNetwork::feed(Tenser<double> input){ return Tenser<double>::defaults({2,2}); }
-    void NeuralNetwork::test(Tenser<double> training_set){}
+    void NeuralNetwork::test(const Tenser<double>& training_set){}
 }
     

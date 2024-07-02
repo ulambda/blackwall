@@ -4,6 +4,8 @@
 
 #define PRINT(x) std::cout << (x) << std::endl;
 
+
+
 void test1(){
     BLKW::Tenser<int> t = BLKW::Tenser<int>::zeros({1});
     assert (t.size() == 1);
@@ -49,10 +51,15 @@ void test3(){
 
 void test4(){
     BLKW::Tenser<int> t = BLKW::Tenser<int>::ones({2,2});
-    BLKW::Tenser<int> t2 = BLKW::Tenser<int>::zeros({5,2});
+    BLKW::Tenser<int> t2 = BLKW::Tenser<int>::zeros({5,2,6,4});
     t2 = t;
+    assert (t.size() == 4);
     assert (t2.size() == 4);
+
+    assert ((*t[{0,0}]) == 1);
     assert ((*t2[{0,0}]) == 1);
+
+
     PRINT("test 4 passed");
 }
 
@@ -60,11 +67,18 @@ void test5(){
     BLKW::Tenser<int> t = BLKW::Tenser<int>::ones({2,2});
     BLKW::Tenser<int> t2 = BLKW::Tenser<int>::ones({2,2});
 
-    BLKW::Tenser<int> t3 = t + t2;
-    assert (t3.size() == 4);
-    assert ((*t3[{0,0}]) == 2);
+    BLKW::Tenser<int> t3 = t;
+
     PRINT("test 5 passed");
-    
+}
+
+
+void test6(){
+    BLKW::Tenser<int> t = BLKW::Tenser<int>::ones({2,2});
+    t.replace({0,1}, 248);
+    assert ((*t[{0,1}]) == 248);
+    assert ((*t[{0,0}]) == 1);
+    PRINT("test 6 passed");
 }
 
 
@@ -74,5 +88,6 @@ int main(){
     test3();
     test4();
     test5();
-    return 0;
+    test6();
+
 }

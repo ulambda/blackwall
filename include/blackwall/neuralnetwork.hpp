@@ -42,16 +42,18 @@ namespace BLKW {
              */     
             void print();
 
-            int output_size() { return output_layer.size; }
+            int output_size();            
+
+
             
 
+            void train(const Tenser<double>& training_set);
+            void train(const double* train_X[], const double* train_y[]);
+            Tenser<double> feed(const Tenser<double>& input);
+            double* feed(double inputs[]);
+            void test(const Tenser<double>& training_set);
+            void test(const double* test_X[], const double* test_y[]);
 
-            double* feed_forward(double inputs[]);
-
-            
-            void train(Tenser<double> training_set);
-            Tenser<double> feed(Tenser<double> input);
-            void test(Tenser<double> training_set);
     };
 }
 
