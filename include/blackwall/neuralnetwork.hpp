@@ -7,6 +7,10 @@
 
 
 namespace BLKW {
+    /**
+     * @brief A simple, high level implementation of a Vanilla Neural Nework. 
+     * @note also called a Forward Feeding Neural Network, Deep Neural Network or Multi-layer Perception 
+     */
     class NeuralNetwork : public Model{
         public:
             struct Layer{
@@ -17,8 +21,8 @@ namespace BLKW {
             };
 
             struct {
-                int epochs;
-                double learning_rate;
+                int epochs = 1;
+                double learning_rate = 0.01;
                 int batch = 1;
             } hyperparams;
 
@@ -35,24 +39,30 @@ namespace BLKW {
              * @param output_size number of neurons in the output layer
              */
             NeuralNetwork(int input_size, std::initializer_list<int> hidden_sizes, int output_size);
+
+            /**
+             * destructor for the neural network that deallocates the memory used by all the neurons in the network
+             */
             ~NeuralNetwork();  
 
             /**
-             * @brief prints the weights and biases of each the neurons in the network by layer
+             * @brief prints the weights and biases for each the neurons in the network by layer
+             * @note the first weight in the list is always the bias
              */     
             void print();
 
+            /**
+             * @brief returns the number of outputs in the output layer
+             * @return the number of neurons in the output layer
+             */
             int output_size();            
-
-
             
-
-            void train(const Tenser<double>& training_set);
-            void train(const double* train_X[], const double* train_y[]);
             Tenser<double> feed(const Tenser<double>& input);
             double* feed(double inputs[]);
-            void test(const Tenser<double>& training_set);
-            void test(const double* test_X[], const double* test_y[]);
+            void train(const Tenser<double>& trainset);
+            void train(double** train_X, double** train_y);
+            double test(const Tenser<double>& testset);
+            double test(const double* test_X[], const double* test_y[]);
 
     };
 }

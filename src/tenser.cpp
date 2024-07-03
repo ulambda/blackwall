@@ -14,8 +14,6 @@ namespace BLKW{
         compute_strides();
     }
 
-
-
     template<typename T>
     Tenser<T>::Tenser(const Tenser& other){
         this->dimensions = other.dimensions;
@@ -139,7 +137,6 @@ namespace BLKW{
             this->data[i] = other.data[i];
         compute_strides();
         return *this;
-
     }
 
     
@@ -172,8 +169,6 @@ namespace BLKW{
     Tenser<T>* Tenser<T>::operator/(Tenser<T> other){
         return merge(other, [](T a, T b) { return a / b; });
     }
-
-
 
     template <typename T>
     void Tenser<T>::replace(std::initializer_list<int> indices, T value){

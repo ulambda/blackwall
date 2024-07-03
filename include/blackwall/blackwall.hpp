@@ -6,7 +6,8 @@
 #include "neuron.hpp"
 #include "neuralnetwork.hpp"
 #include "activation_function.hpp"
-#include "../../src/blackwall.cpp"
+#include "loss_function.hpp"
 
+#include "../../src/blackwall.cpp"
 namespace BLKW {}
 #endif // BLACKWALL_HPP

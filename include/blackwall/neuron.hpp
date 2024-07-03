@@ -76,6 +76,8 @@ namespace BLKW{
              * @note first value is always the bias, then the rest are its weights
              */
             std::string to_string();
+
+            int get_size() const;
     };
 }
 

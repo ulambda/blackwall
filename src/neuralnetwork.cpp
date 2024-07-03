@@ -5,7 +5,6 @@
 
 namespace BLKW{
 
-
     NeuralNetwork::NeuralNetwork(int input_size, std::initializer_list<int> hidden_sizes, int output_size){
         int previous_size = 1;
         Layer *prev_layer = nullptr;  
@@ -49,7 +48,6 @@ namespace BLKW{
             current_layer = next_layer;
             if(next_layer != nullptr)
                 next_layer = next_layer->next;
-
         }
     }
 
@@ -80,7 +78,6 @@ namespace BLKW{
     int NeuralNetwork::output_size(){
         return output_layer.size;
     }
-
 
 
     double* NeuralNetwork::feed(double inputs[]){
@@ -118,13 +115,40 @@ namespace BLKW{
         return outputs;
     }
 
-    void NeuralNetwork::train(const double* train_X[], const double* train_y[]){
+    void NeuralNetwork::train(double* train_X[], double* train_y[]){
+        //train_X is a 2d array, each row (first index) is a data instance, each column is a feature
+            //number of features should == to the number of input neurons if each neuron in the input layer accepts only 1 input
+            //if each neuron in the input layer accepts multiple inputs, then train_X has to be a 3d array where the columns are an array of features for a single feature and the depth are multiple inputs for the input layer neuron
         
+        // double* outputs[output_layer.size];
+        
+        // for(int i = 0 ; i < input_layer.size ; i++){
+        //     double* data = train_X[i];
+
+        //     outputs[i] = this->feed(train_X[i]);
+        //     std::cout<<"output: "<<outputs[i]<<std::endl;
+        // }
+
+        //train y is a 2d or 1d array of exepected values. each row is the expected output the neuron should result in if you feed in the corrasponding input in train_X by index
+            //train_y is 2d if network has multiple neurons in the output layer
+            //1d if neuron has only 1 neuron in the output layer
+
+        //for each training input in train_X
+            //feed input through the network and get an output
+            //compare this output to the exepected value in train_y (of the same index of the training input from train_X) and calculate the error for partial derivatives
+        
+        //update weights and biases using the partial derivitives
+
     }
 
-    void NeuralNetwork::train(const Tenser<double>& training_set){}
+    void NeuralNetwork::train(const Tenser<double>& trainset){
 
+    }
 
-    void NeuralNetwork::test(const Tenser<double>& training_set){}
+    double NeuralNetwork::test(const Tenser<double>& testset){return 0;}
+
+    double NeuralNetwork::test(const double* test_X[], const double* test_y[]){
+        return 0;
+    }
 }
     

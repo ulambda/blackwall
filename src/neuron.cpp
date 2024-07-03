@@ -72,4 +72,8 @@ namespace BLKW{
 
         return str;
     }
+
+    int Neuron::get_size() const{
+        return size;
+    }
 }

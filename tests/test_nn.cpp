@@ -29,9 +29,34 @@ void test2(){
 }
 
 
+void test3(){
+    BLKW::NeuralNetwork nn(3, {3, 3}, 3);
+
+    double train_X [3][3] = {
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    };
+
+    double train_y [3][3] = {
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    };
+
+    double* xptr [3]{train_X[0], train_X[1], train_X[2]};
+    double* yptr [3]{train_y[0], train_y[1], train_y[2]};
+
+
+
+    nn.train(xptr, yptr);
+
+    PRINT("test 3 passed");
+}
 
 int main(void){
     //test1();
-    test2();
+    //test2();
+    test3();
     return 0;
 }
