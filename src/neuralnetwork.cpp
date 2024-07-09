@@ -6,59 +6,52 @@
 namespace BLKW{
 
     NeuralNetwork::NeuralNetwork(int input_size, std::initializer_list<int> hidden_sizes, int output_size){
-        int previous_size = 1;
+        int prev_size = 1;
         Layer *prev_layer = nullptr;  
+    
+        this->input_layer = {input_size, new Neuron[input_size]}; //init input layer of size input_size
 
-        input_layer = {input_size, new Neuron[input_size]};
+        //set neurons in input layer to have 1 input, 0 bias, and identity activation function
         for(int i = 0 ; i < input_size ; i++){
-            input_layer.neurons[i] = Neuron(1, new double[1]{1}, 0, &ActivationFunction::identity);
+            input_layer.neurons[i] = Neuron(1, new double[1]{1}, 0, &ActivationFunction::identity); 
         }
-        previous_size = input_layer.size;
+
+        prev_size = input_layer.size;
         prev_layer = &input_layer;
 
+        //create hidden layers
         for(int hidden_size : hidden_sizes){
             Layer hidden_layer = {hidden_size, new Neuron[hidden_size]};
+
+            //set neurons of this hidden layer to accept prev_size number of inputs
             for(int i = 0 ; i < hidden_size ; i++){
-                hidden_layer.neurons[i] = Neuron(previous_size);
+                hidden_layer.neurons[i] = Neuron(prev_size);
             }
 
-            prev_layer->next = &hidden_layer;
+            prev_layer->next = &hidden_layer; //set the previous layer's next member to point to the current hidden layer
             hidden_layer.prev = prev_layer;
             prev_layer = &hidden_layer;
            
             hidden_layers.push_back(hidden_layer);
-            previous_size = hidden_size;
+            prev_size = hidden_size;
         }
-
-        output_layer = {output_size, new Neuron[output_size]};
+    
+        this->output_layer = {output_size, new Neuron[output_size]};
         for(int i = 0 ; i < output_size ; i++){
-            output_layer.neurons[i] = Neuron(previous_size);
+            output_layer.neurons[i] = Neuron(prev_size);
         }
         prev_layer->next = &output_layer;
         output_layer.prev = prev_layer;
-        previous_size = output_layer.size;
     }
 
-    NeuralNetwork::~NeuralNetwork(){
-        Layer *current_layer = &input_layer;
-        Layer *next_layer = current_layer->next;
-        while(current_layer != nullptr){
-            delete[] current_layer->neurons;
-            delete current_layer;
-            current_layer = next_layer;
-            if(next_layer != nullptr)
-                next_layer = next_layer->next;
-        }
-    }
+    NeuralNetwork::~NeuralNetwork(){}
 
 
     void NeuralNetwork::print(){
         std::cout<<"input layer: [";
         for(int i = 0 ; i < input_layer.size ; i++)
             std::cout<<input_layer.neurons[i].to_string()<<",";
-        
         std::cout<<"]" << std::endl;
-
         int hidden_layer_index = 0;
         for(Layer hidden_layer : hidden_layers){    
             std::cout<<"hidden layer " << hidden_layer_index <<": [";
@@ -67,44 +60,61 @@ namespace BLKW{
             std::cout<<"]" << std::endl;
             hidden_layer_index++;
         }
-
         std::cout<<"output layer: [";
         for(int i = 0 ; i < output_layer.size ; i++)
             std::cout<<output_layer.neurons[i].to_string()<<",";
         std::cout<<"]" << std::endl;
-
     }
 
     int NeuralNetwork::output_size(){
         return output_layer.size;
     }
 
+    // double* NeuralNetwork::feed(double input[]){
+    //     Layer* current_layer = &hidden_layers[0];
+    //     double *current_inputs = input;
+    //     double *current_outputs;
+    //     while(current_layer != nullptr){
+    //         current_outputs = new double[current_layer->size];
+    //         for(int i = 0 ; i < current_layer->size ; i++)
+    //             current_outputs[i] = current_layer->neurons[i].output(current_inputs);
+    //         current_inputs = current_outputs;
+    //         current_layer = current_layer->next;
+    //     }
+    //     return current_outputs;
+    // }
 
-    double* NeuralNetwork::feed(double inputs[]){
-        Layer *current_layer = &input_layer; // Declare and initialize the input_layer variable
+    std::vector<double> NeuralNetwork::feed(const std::vector<double>& input){
+        if(input.size() != input_layer.size)
+            throw std::invalid_argument("input layer expected " + std::to_string(input_layer.size) + " inputs but got " + std::to_string(input.size()) + " inputs.");
     
-        double *current_inputs = inputs;
+        Layer* current_layer = &hidden_layers[0];
     
-        double *current_outputs = new double[current_layer->size];
+        std::vector<double> current_inputs = input;
     
         while(current_layer != nullptr){
-            for(int i = 0 ; i < current_layer->size ; i++){
+            std::vector<double> current_outputs(current_layer->size);
+
+            for(int i = 0 ; i < current_layer->size ; i++)
                 current_outputs[i] = current_layer->neurons[i].output(current_inputs);
-            }
+            
             current_inputs = current_outputs;
             current_layer = current_layer->next;
         }
-    
-        return current_outputs;
+        
+        return current_inputs;
     }
 
-    Tenser<double> NeuralNetwork::feed(const Tenser<double>& input){ 
-        if(input.depth() != 1 || input.size() != input_layer.size)
-            throw std::runtime_error("Invalid input dimensions");
 
-        Layer* layer = &input_layer;
+    Tenser<double> NeuralNetwork::feed(const Tenser<double>& input){ 
+        if(input.size() != input_layer.size)
+            throw std::invalid_argument("input layer expected " + std::to_string(input_layer.size) + " inputs but got " + std::to_string(input.size()) + " inputs.");
+
+        Layer* layer = &hidden_layers[0];
+
         Tenser<double> inputs(input);
         Tenser<double> outputs = Tenser<double>({layer->size});
+
         while(layer != nullptr){
             for(int i = 0 ; i < layer->size ; i++)
                 (*outputs[{i}]) = layer->neurons[i].output(inputs[{i}]);
@@ -115,31 +125,19 @@ namespace BLKW{
         return outputs;
     }
 
-    void NeuralNetwork::train(double* train_X[], double* train_y[]){
-        //train_X is a 2d array, each row (first index) is a data instance, each column is a feature
-            //number of features should == to the number of input neurons if each neuron in the input layer accepts only 1 input
-            //if each neuron in the input layer accepts multiple inputs, then train_X has to be a 3d array where the columns are an array of features for a single feature and the depth are multiple inputs for the input layer neuron
-        
-        // double* outputs[output_layer.size];
-        
-        // for(int i = 0 ; i < input_layer.size ; i++){
-        //     double* data = train_X[i];
+    void NeuralNetwork::train(const std::vector<std::vector<double>>& train_X, const std::vector<std::vector<double>>& train_y){
 
-        //     outputs[i] = this->feed(train_X[i]);
-        //     std::cout<<"output: "<<outputs[i]<<std::endl;
-        // }
+        for(int i = 0 ; i < train_X.size() ; i++){
 
-        //train y is a 2d or 1d array of exepected values. each row is the expected output the neuron should result in if you feed in the corrasponding input in train_X by index
-            //train_y is 2d if network has multiple neurons in the output layer
-            //1d if neuron has only 1 neuron in the output layer
+            std::vector<double> outputs = feed(train_X[i]);
+  
+            std::vector<double> targets = train_y[i];
 
-        //for each training input in train_X
-            //feed input through the network and get an output
-            //compare this output to the exepected value in train_y (of the same index of the training input from train_X) and calculate the error for partial derivatives
-        
-        //update weights and biases using the partial derivitives
-
+        }
     }
+
+
+
 
     void NeuralNetwork::train(const Tenser<double>& trainset){
 

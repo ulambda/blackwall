@@ -7,56 +7,68 @@
 
 
 void test1(){
-    BLKW::NeuralNetwork nn(1, {2, 3}, 3);
-    nn.print();
-    double *predict = nn.feed(new double[1]{1});
+    BLKW::NeuralNetwork nn(3, {2, 3}, 1);
+    // nn.print();
+    std::vector<double> inputs = {1.0, 2.0, 3.0};
+
+    std::vector predict = nn.feed(inputs);
+
     
-    std::cout<<"outputs: [";
-    for(int i = 0 ; i < nn.output_size() ; i++)
-        std::cout<<"{"<<predict[i]<<"}";
-    std::cout<<"]";
-    std::cout<<"\n";
+    // std::cout<<"outputs: [";
+    // for(int i = 0 ; i < nn.output_size() ; i++)
+    //     std::cout<<"{"<<predict[i]<<"}";
+    // std::cout<<"]";
+    // std::cout<<"\n";
     PRINT("test 1 passed");
 }
 
-void test2(){
-    BLKW::NeuralNetwork nn(1, {2, 3}, 3);
-    BLKW::Tenser<double> input = BLKW::Tenser<double>::ones({1});
-
-    BLKW::Tenser<double> output = nn.feed(input);
-
-    PRINT("test 2 passed");
-}
+// void test2(){
+//     BLKW::NeuralNetwork nn(1, {2, 3}, 3);
+//     BLKW::Tenser<double> input = BLKW::Tenser<double>::ones({1});
+//     BLKW::Tenser<double> output = nn.feed(input);
+//     PRINT("test 2 passed");
+// }
 
 
 void test3(){
-    BLKW::NeuralNetwork nn(3, {3, 3}, 3);
 
-    double train_X [3][3] = {
-        {1, 2, 3},
-        {4, 5, 6},
-        {7, 8, 9}
+
+    //xor problem
+    BLKW::NeuralNetwork nn(2, {2}, 1);
+    std::vector<std::vector<double>> inputs = {
+        {0, 0}, {0, 1}, {1, 0}, {1, 1}
     };
-
-    double train_y [3][3] = {
-        {1, 2, 3},
-        {4, 5, 6},
-        {7, 8, 9}
+    std::vector<std::vector<double>> outputs = {
+        {0}, {1}, {1}, {0}
     };
-
-    double* xptr [3]{train_X[0], train_X[1], train_X[2]};
-    double* yptr [3]{train_y[0], train_y[1], train_y[2]};
-
-
-
-    nn.train(xptr, yptr);
-
+    nn.train(inputs, outputs);
     PRINT("test 3 passed");
 }
 
+void test4(){
+    BLKW::NeuralNetwork nn(2, {2}, 1);
+    std::vector<std::vector<double>> inputs = {
+        {0, 0}, {0, 1}, {1, 0}, {1, 1}
+    };
+    std::vector<std::vector<double>> outputs = {
+        {0}, {1}, {1}, {0}
+    };
+    
+     std::vector out = nn.feed(inputs[0]);
+    
+    std::cout<<"outputs: [";
+    for(int i = 0 ; i < nn.output_size() ; i++)
+        std::cout<<"{"<<out[i]<<"}";
+    std::cout<<"]";
+    std::cout<<"\n";
+
+    PRINT("test 4 passed");
+
+}
+
 int main(void){
-    //test1();
-    //test2();
+    test1();
     test3();
+    //test4();
     return 0;
 }

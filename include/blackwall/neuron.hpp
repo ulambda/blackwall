@@ -11,7 +11,6 @@ namespace BLKW{
     class Neuron{
         private:
             int size; //specifies the number of inputs the neuron accepts and the number of weights it has
-            //std::shared_ptr<double[]> weights; //pointer to a dynamiclly allocated array of weights
             double *weights = nullptr; //pointer to a dynamiclly allocated array of weights
             double bias; //additive parameter that offsets how string the weighted sum needs to be for the neuron to fire
             double const (*activation_function)(double) = nullptr; //pointer to the activiation function the neuron uses
@@ -62,7 +61,14 @@ namespace BLKW{
              * @param inputs array of inputs
              * @return output of the neuron
              */
-            double output(double inputs[]);
+            double output(double inputs[]) const;
+
+            /**
+             * @brief feeds the inputs into the neuron and returns the output
+             * @param inputs vector of inputs
+             * @return output of the neuron
+             */
+            double output(const std::vector<double>& inputs) const;
             
             /**
              * @brief sets the activation function of the neuron
@@ -75,8 +81,12 @@ namespace BLKW{
              * @return string representation of the neuron
              * @note first value is always the bias, then the rest are its weights
              */
-            std::string to_string();
+            std::string to_string() const;
 
+            /**
+             * @brief returns the size of the neuron
+             * @return size of the neuron
+             */
             int get_size() const;
     };
 }

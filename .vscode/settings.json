@@ -112,6 +112,7 @@
     "numbers": "cpp",
     "text_encoding": "cpp",
     "variant": "cpp",
-    "iomanip": "cpp"
+    "iomanip": "cpp",
+    "cassert": "cpp"
   }
 }

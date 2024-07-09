@@ -43,7 +43,18 @@ namespace BLKW{
         return *this;
     }
 
-    double Neuron::output(double inputs[]){
+    double Neuron::output(double inputs[]) const{
+        double sum = 0;
+        for(int i = 0; i < size; i++)
+            sum += inputs[i] * weights[i];
+        double z = sum + bias;
+        double y = activation_function(z);
+        return y;
+    }
+
+    double Neuron::output(const std::vector<double>& inputs) const{
+        if(inputs.size() != size)
+            throw std::invalid_argument("neuron exepcted " + std::to_string(size) + " inputs but got " + std::to_string(inputs.size()) + " inputs.");
         double sum = 0;
         for(int i = 0; i < size; i++)
             sum += inputs[i] * weights[i];
@@ -62,7 +73,7 @@ namespace BLKW{
     //         weights[i] = distribution(generator);
     // }
 
-    std::string Neuron::to_string(){
+    std::string Neuron::to_string() const{
         std::string str = "{";
         str += std::to_string(bias) + ", ";
         for(int i = 0 ; i < size ; i++)

@@ -57,10 +57,26 @@ namespace BLKW {
              */
             int output_size();            
             
+            /**
+             * @brief feeds forward the inpust into the network and returns the output
+             * @param input the input to the network
+             * @return the output of the network
+             */
             Tenser<double> feed(const Tenser<double>& input);
-            double* feed(double inputs[]);
+
+            //double* feed(double input[]);
+
+            /**
+             * @brief feeds forward the inpust into the network and returns the output
+             * @param input the input to the network
+             * @return the output of the network
+             */
+            std::vector<double> feed(const std::vector<double>& input);
+
             void train(const Tenser<double>& trainset);
-            void train(double** train_X, double** train_y);
+            //void train(double** train_X, double** train_y);
+            void train(const std::vector<std::vector<double>>& train_X, const std::vector<std::vector<double>>& train_y);
+
             double test(const Tenser<double>& testset);
             double test(const double* test_X[], const double* test_y[]);
 
