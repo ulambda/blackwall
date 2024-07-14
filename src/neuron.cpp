@@ -21,13 +21,10 @@ namespace BLKW{
         std::random_device random;
         std::mt19937 generator(random());
         std::uniform_real_distribution<double> distribution(0.0, 1.0);
-
         // std::default_random_engine generator;
         // std::normal_distribution<double> distribution(0.0 , 1.0);
-
         for(int i = 0; i < size; i++)
             this->weights[i] = distribution(generator);
-
         this->bias = distribution(generator);
     }
 
@@ -55,6 +52,7 @@ namespace BLKW{
     double Neuron::output(const std::vector<double>& inputs) const{
         if(inputs.size() != size)
             throw std::invalid_argument("neuron exepcted " + std::to_string(size) + " inputs but got " + std::to_string(inputs.size()) + " inputs.");
+        
         double sum = 0;
         for(int i = 0; i < size; i++)
             sum += inputs[i] * weights[i];

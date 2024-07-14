@@ -10,8 +10,8 @@
  #include "lib/blackwall/include/blackwall/blackwall.hpp"
  
  int main(){
-    BLWK::Tenser<double> train_X = new BLKW::Tenser<double>({{0, 0}, {0, 1}, {1, 0}, {1, 1}});
-    BLWK::Tenser<double> train_y = new BLKW::Tenser<double>({{0}, {1}, {1}, {0}});
+    BLWK::Tenser<double> train_X = new BLKW::Tenser<double>({4,2});
+    BLWK::Tenser<double> train_y = new BLKW::Tenser<double>({4});
     
     BLKW::Model nn = new BLKW::NeuralNetwork(2, {2}, 1);
     

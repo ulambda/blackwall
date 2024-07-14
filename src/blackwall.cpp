@@ -4,3 +4,4 @@
 #include "./neuralnetwork.cpp"
 #include "./activation_function.cpp"
 #include "./loss_function.cpp"
+#include "./k-nearestneighbours.cpp"

@@ -27,7 +27,7 @@ namespace BLKW {
             } hyperparams;
 
         private:
-            Layer input_layer;
+            int input_layer_size;
             std::vector<Layer> hidden_layers;
             Layer output_layer;
 
@@ -64,8 +64,6 @@ namespace BLKW {
              */
             Tenser<double> feed(const Tenser<double>& input);
 
-            //double* feed(double input[]);
-
             /**
              * @brief feeds forward the inpust into the network and returns the output
              * @param input the input to the network
@@ -73,13 +71,27 @@ namespace BLKW {
              */
             std::vector<double> feed(const std::vector<double>& input);
 
+            /**
+             * @brief trains the network on a dataset
+             * @param trainset the dataset to train the network on
+             */
             void train(const Tenser<double>& trainset);
-            //void train(double** train_X, double** train_y);
+
+            /**
+             * @brief trains the network on a dataset
+             * @param train_X the input dataset to train the network on
+             * @param train_y the output dataset to train the network on
+             */
             void train(const std::vector<std::vector<double>>& train_X, const std::vector<std::vector<double>>& train_y);
-
+            
+            /**
+             * @brief tests the network on a dataset
+             * @param testset the dataset to test the network on
+             * @return the accuracy of the network
+             */
             double test(const Tenser<double>& testset);
-            double test(const double* test_X[], const double* test_y[]);
 
+            double test(const std::vector<std::vector<double>>& test_X, const std::vector<std::vector<double>>& test_y);
     };
 }
 

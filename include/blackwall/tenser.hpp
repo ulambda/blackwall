@@ -5,6 +5,7 @@
 #include <initializer_list>
 #include <random> 
 #include <numeric>
+#include <variant>
 #include <functional>
 
 namespace BLKW{
@@ -17,9 +18,14 @@ namespace BLKW{
 
             void compute_strides();
             int flatten_index(std::initializer_list<int> indices);
+
         public:
             Tenser(std::initializer_list<int> dimensions);
-            //Tenser(std::initializer_list<std::initializer_list<T>> dimensions);
+            
+            // using NestedInit = std::variant<T, std::initializer_list<NestedInit>>;
+            // Tenser(NestedInit values){
+            // }
+
             Tenser(const Tenser& other) ;
             ~Tenser();
             static Tenser<T> defaults(std::initializer_list<int> dimensions);
@@ -56,8 +62,6 @@ namespace BLKW{
 
             void replace(std::initializer_list<int> indices, T value);
 
-
-
             // Tenser<T>* operator+(T scalar);
             // Tenser<T>* operator-(T scalar);
             // Tenser<T>* operator*(T scalar);
@@ -68,85 +72,6 @@ namespace BLKW{
             // Tenser<T>& operator*=(const Tenser<T>& other);
             // Tenser<T>& operator/=(const Tenser<T>& other);
     };
-
-    //template <class T>
-    // class Tenser1D : public Tenser<T>{
-    //     public:
-    //         Tenser1D(int width) : Tenser<T>({width}){}
-    //         Tenser1D(const Tenser1D *other) : Tenser<T>(other){}
-    //         ~Tenser1D(){}
-
-    //         using Tenser<T>::size;
-    //         using Tenser<T>::shape;
-    //         using Tenser<T>::depth;
-    //         using Tenser<T>::print;
-    //         using Tenser<T>::merge;
-    //         using Tenser<T>::for_each;
-    //         using Tenser<T>::operator[];
-    //         using Tenser<T>::operator=;
-    //         using Tenser<T>::operator+;
-    //         using Tenser<T>::operator-;
-    //         using Tenser<T>::operator*;
-    //         using Tenser<T>::operator/;
-    // };
-
-    // template <class T>
-    // class Tenser2D : public Tenser<T>{
-    //     public:
-    //         Tenser2D(int width, int height) : Tenser<T>({width, height}){}
-    //         Tenser2D(const Tenser2D *other) : Tenser<T>(other){}
-    //         ~Tenser2D(){}
-
-    //         using Tenser<T>::size;
-    //         using Tenser<T>::shape;
-    //         using Tenser<T>::depth;
-    //         using Tenser<T>::print;
-    //         using Tenser<T>::merge;
-    //         using Tenser<T>::for_each;
-    //         using Tenser<T>::operator[];
-    //         using Tenser<T>::operator=;
-    //         using Tenser<T>::operator+;
-    //         using Tenser<T>::operator-;
-    //         using Tenser<T>::operator*;
-    //         using Tenser<T>::operator/;
-    // };
-
-    // template <class T>
-    // class Tenser3D : public Tenser<T>{
-    //     public:
-    //         Tenser3D(int width, int height, int depth) : Tenser<T>({width, height, depth}){}
-    //         Tenser3D(const Tenser3D *other) : Tenser<T>(other){}
-    //         ~Tenser3D(){}
-    //         using Tenser<T>::size;
-    //         using Tenser<T>::shape;
-    //         using Tenser<T>::depth;
-    //         using Tenser<T>::print;
-    //         using Tenser<T>::merge;
-    //         using Tenser<T>::for_each;
-    //         using Tenser<T>::operator[];
-    //         using Tenser<T>::operator=;
-    //         using Tenser<T>::operator+;
-    //         using Tenser<T>::operator-;
-    //         using Tenser<T>::operator*;
-    //         using Tenser<T>::operator/;
-    // };
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #endif // TENSER_HPP

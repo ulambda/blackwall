@@ -7,6 +7,7 @@
 #include "neuralnetwork.hpp"
 #include "activation_function.hpp"
 #include "loss_function.hpp"
+#include "k-nearestneighbours.hpp"
 
 #include "../../src/blackwall.cpp"
 namespace BLKW {}
