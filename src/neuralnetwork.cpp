@@ -24,7 +24,9 @@ namespace BLKW{
             for(int i = 0 ; i < hidden_size ; i++)
                 hidden_layer.neurons[i] = Neuron(prev_size);
         
-            prev_layer->next = &hidden_layer; //set the previous layer's next member to point to the current hidden layer
+            if(prev_layer != nullptr)
+                prev_layer->next = &hidden_layer; //set the previous layer's next member to point to the current hidden layer
+           
             hidden_layer.prev = prev_layer;
             prev_layer = &hidden_layer;
            
@@ -92,10 +94,8 @@ namespace BLKW{
     
         // while(current_layer != nullptr){
         //     std::vector<double> current_outputs(current_layer->size);
-
         //     for(int i = 0 ; i < current_layer->size ; i++)
         //         current_outputs[i] = current_layer->neurons[i].output(current_inputs);
-            
         //     current_inputs = current_outputs;
         //     current_layer = current_layer->next;
         // }
@@ -148,6 +148,7 @@ namespace BLKW{
             //     errors[i] = targets[i] - outputs[i];
             
             double total_error = LossFunction::mean_squared_error(outputs, targets);
+            std::cout<<"total error: "<<total_error<<std::endl;
         }
     }
 

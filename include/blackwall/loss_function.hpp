@@ -24,7 +24,7 @@ namespace BLKW{
              * @return the mean squared error
              * @note the size of the arrays must be the same
              */
-            const static double mean_squared_error(std::vector<double> y, std::vector<double> t);
+            const static double mean_squared_error(const std::vector<double>& y, const std::vector<double>& t);
 
             /**
              * @brief calculates the cross entropy loss between the predicted values and the actual values

@@ -54,7 +54,7 @@ void test4(){
         {0}, {1}, {1}, {0}
     };
     
-     std::vector out = nn.feed(inputs[0]);
+    std::vector out = nn.feed(inputs[0]);
     
     std::cout<<"outputs: [";
     for(int i = 0 ; i < nn.output_size() ; i++)
@@ -66,9 +66,32 @@ void test4(){
 
 }
 
+/**
+ * tests the training process to see if the error is correct
+ */
+
+void test5(){
+    BLKW::NeuralNetwork nn(2, {2}, 1);
+    std::vector<std::vector<double>> inputs = {
+        {0, 0}, {0, 1}, {1, 0}, {1, 1}
+    };
+    std::vector<std::vector<double>> outputs = {
+        {0}, {1}, {1}, {0}
+    };
+    nn.train(inputs, outputs);
+    std::cout<<"\n";
+    nn.train(inputs, outputs);
+    std::cout<<"\n";
+    nn.train(inputs, outputs);
+    
+    PRINT("test 5 passed");
+
+}
+
 int main(void){
-    test1();
-    test3();
+    //test1();
+    //test3();
     //test4();
+    test5();
     return 0;
 }

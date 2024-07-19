@@ -14,7 +14,7 @@ namespace BLKW{
         return sum / size;
     }
 
-    const double LossFunction::mean_squared_error(std::vector<double> y, std::vector<double> t){
+    const double LossFunction::mean_squared_error(const std::vector<double>& y, const std::vector<double>& t){
         if(y.size() != t.size())
             throw std::invalid_argument("size of y and t must be the same. but got y.size() = " + std::to_string(y.size()) + " and t.size() = " + std::to_string(t.size()));
 
