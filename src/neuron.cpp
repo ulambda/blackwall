@@ -1,23 +1,35 @@
 #include "../include/blackwall/neuron.hpp"
+#include "../include/blackwall/activation_function.hpp"
 #include <stdexcept>
 #include <random>
 
+
+
 namespace BLKW{
 
-    Neuron::Neuron(int size, double weights[], double bias, double const (*activation_function)(double)) {
+    // Neuron::Neuron(int size, double weights[], double bias, double const (*activation_function)(double)) {
+    //     this->size = size;
+    //     this->weights = new double[size];
+    //     for(int i = 0; i < size; i++)
+    //         this->weights[i] = weights[i];
+    //     this->bias = bias;
+    //     this->activation_function = activation_function;
+    // }
+
+    Neuron::Neuron(int size, double weights[], double bias, ActivationFunction::Type activation_function_type) {
         this->size = size;
         this->weights = new double[size];
         for(int i = 0; i < size; i++)
             this->weights[i] = weights[i];
         this->bias = bias;
-        this->activation_function = activation_function;
+        this->activation_function_type = activation_function_type;
     }
 
-    Neuron::Neuron() : Neuron(1, new double[1]{1}, 0, &ActivationFunction::identity) {}
+    Neuron::Neuron() : BLKW::Neuron(1, new double[1]{1}, 0, ActivationFunction::Type::IDENTITY) {}
 
-    Neuron::Neuron(const Neuron *other) : Neuron(other->size, other->weights, other->bias, other->activation_function) {}
+    Neuron::Neuron(const Neuron *other) : Neuron(other->size, other->weights, other->bias, other->activation_function_type) {}
 
-    Neuron::Neuron(int size) : Neuron(size, new double[size], 0, &ActivationFunction::identity) {
+    Neuron::Neuron(int size) : Neuron(size, new double[size], 0, ActivationFunction::Type::IDENTITY) {
         std::random_device random;
         std::mt19937 generator(random());
         std::uniform_real_distribution<double> distribution(0.0, 1.0);
@@ -36,7 +48,7 @@ namespace BLKW{
         this->size = other.size;
         this->weights = other.weights;
         this->bias = other.bias;
-        this->activation_function = other.activation_function;
+        this->activation_function_type = other.activation_function_type;
         return *this;
     }
 
@@ -45,6 +57,7 @@ namespace BLKW{
         for(int i = 0; i < size; i++)
             sum += inputs[i] * weights[i];
         double z = sum + bias;
+        const double (*activation_function)(double) = ActivationFunction::get_activation_function(activation_function_type);
         double y = activation_function(z);
         return y;
     }
@@ -57,19 +70,10 @@ namespace BLKW{
         for(int i = 0; i < size; i++)
             sum += inputs[i] * weights[i];
         double z = sum + bias;
+        const double (*activation_function)(double) = ActivationFunction::get_activation_function(activation_function_type);
         double y = activation_function(z);
         return y;
     }
-
-
-
-    // void Neuron::randomize(){
-    //     std::random_device random;
-    //     std::mt19937 generator(random());
-    //     std::uniform_real_distribution<double> distribution(0.0, 1.0);
-    //     for(int i = 0 ; i < size ; i++)
-    //         weights[i] = distribution(generator);
-    // }
 
     std::string Neuron::to_string() const{
         std::string str = "{";
@@ -84,5 +88,9 @@ namespace BLKW{
 
     int Neuron::get_size() const{
         return size;
+    }
+
+    void Neuron::set_activation_function(ActivationFunction::Type activation_function_type){
+        this->activation_function_type = activation_function_type;
     }
 }

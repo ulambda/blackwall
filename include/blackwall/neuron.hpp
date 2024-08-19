@@ -13,7 +13,8 @@ namespace BLKW{
             int size; //specifies the number of inputs the neuron accepts and the number of weights it has
             double *weights = nullptr; //pointer to a dynamiclly allocated array of weights
             double bias; //additive parameter that offsets how string the weighted sum needs to be for the neuron to fire
-            double const (*activation_function)(double) = nullptr; //pointer to the activiation function the neuron uses
+            //double const (*activation_function)(double) = nullptr; //pointer to the activiation function the neuron uses
+            ActivationFunction::Type activation_function_type; //enum type of the activation function
 
         public:
 
@@ -24,7 +25,16 @@ namespace BLKW{
              * @param bias bias of the neuron
              * @param activation_function pointer to the activation function the neuron uses
              */
-            Neuron(int size, double weights[], double bias, double const (*activation_function)(double));
+            //Neuron(int size, double weights[], double bias, double const (*activation_function)(double));
+
+            /**
+             * @brief parameterized constructor for manually setting the weights and bias of a neuron and the activation function.
+             * @param size number of inputs the neuron accepts
+             * @param weights array of weights for the neuron
+             * @param bias bias of the neuron
+             * @param activation_function_type enum type of the activation function the neuron uses
+             */
+            Neuron(int size, double weights[], double bias, ActivationFunction::Type activation_function_type);
 
             /**
              * @brief parameterized constructor creates a neuron that accepts a specified number of inputs and initializes the weights and bias with random values.
@@ -72,9 +82,11 @@ namespace BLKW{
             
             /**
              * @brief sets the activation function of the neuron
-             * @param activation_function pointer to an activation function
+             * @param activation_function activation function enum type
              */
-            void set_activation_function(double const (*activation_function)(double));
+
+            void set_activation_function(ActivationFunction::Type activation_function_type);
+
             
             /**
              * @brief returns a string representation of the neuron
