@@ -114,5 +114,6 @@
     "variant": "cpp",
     "iomanip": "cpp",
     "cassert": "cpp"
-  }
+  },
+  "C_Cpp.errorSquiggles": "disabled"
 }

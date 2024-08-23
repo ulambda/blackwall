@@ -44,5 +44,43 @@ namespace BLKW{
         return -sum;
     }
 
+    //dirivatives
+
+    const double* LossFunction::mean_squared_error_derivative(double* y, double* t, int size){
+        double* d = new double[size];
+        for(int i = 0 ; i < size ; i++)
+            d[i] = 2 * (y[i] - t[i]);
+        return d;
+    }
+
+    const std::vector<double> LossFunction::mean_squared_error_derivative(const std::vector<double>& y, const std::vector<double>& t){
+        if(y.size() != t.size())
+            throw std::invalid_argument("size of y and t must be the same. but got y.size() = " + std::to_string(y.size()) + " and t.size() = " + std::to_string(t.size()));
+
+        std::vector<double> d(y.size());
+        for(int i = 0 ; i < y.size() ; i++)
+            d[i] = 2 * (y[i] - t[i]);
+        return d;
+    }
+
+    const double* LossFunction::cross_entropy_derivative(double* y, double* t, int size){
+        double* d = new double[size];
+        for(int i = 0 ; i < size ; i++)
+            d[i] = -t[i] / y[i];
+        return d;
+    }
+
+    const std::vector<double> LossFunction::cross_entropy_derivative(const std::vector<double>& y, const std::vector<double>& t){
+        if(y.size() != t.size())
+            throw std::invalid_argument("size of y and t must be the same. but got y.size() = " + std::to_string(y.size()) + " and t.size() = " + std::to_string(t.size()));
+
+        std::vector<double> d(y.size());
+        for(int i = 0 ; i < y.size() ; i++)
+            d[i] = -t[i] / y[i];
+        return d;
+    }
+
+
+
 
 }

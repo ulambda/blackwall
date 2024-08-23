@@ -23,7 +23,7 @@ namespace BLKW {
             struct {
                 int epochs = 1;
                 double learning_rate = 0.01;
-                int batch = 1;
+                int batch_size = 1;
             } hyperparams;
 
         private:
@@ -90,8 +90,8 @@ namespace BLKW {
              * @return the accuracy of the network
              */
             double test(const Tenser<double>& testset);
-
             double test(const std::vector<std::vector<double>>& test_X, const std::vector<std::vector<double>>& test_y);
+            void gradient_search(const std::vector<std::vector<double>>& train_X, const std::vector<std::vector<double>>& train_y);
     };
 }
 

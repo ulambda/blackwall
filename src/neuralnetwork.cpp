@@ -100,7 +100,6 @@ namespace BLKW{
         //     current_layer = current_layer->next;
         // }
 
-
         for(Layer hidden_layer : hidden_layers){
             std::vector<double> current_outputs(hidden_layer.size);
             for(int i = 0 ; i < hidden_layer.size ; i++)
@@ -136,26 +135,45 @@ namespace BLKW{
     }
 
     void NeuralNetwork::train(const std::vector<std::vector<double>>& train_X, const std::vector<std::vector<double>>& train_y){
+        gradient_search(train_X, train_y);
+    }
 
-        for(int trainingRow = 0 ; trainingRow < train_X.size() ; trainingRow++){
+    void NeuralNetwork::train(const Tenser<double>& trainset){}
+    double NeuralNetwork::test(const Tenser<double>& testset){return 0;}
 
-            std::vector<double> outputs = feed(train_X[trainingRow]);
-  
-            std::vector<double> targets = train_y[trainingRow];
 
-            // std::vector<double> errors(output_size());
-            // for(int i = 0 ; i < output_size() ; i++)
-            //     errors[i] = targets[i] - outputs[i];
-            
-            double total_error = LossFunction::mean_squared_error(outputs, targets);
-            std::cout<<"total error: "<<total_error<<std::endl;
+    double NeuralNetwork::test(const std::vector<std::vector<double>>& test_X, const std::vector<std::vector<double>>& test_y){
+        double total_accuracy = 0.0;
+        for(int row = 0 ; row < test_X.size() ; row++){
+            std::vector<double> outputs = feed(test_X[row]);  
+            std::vector<double> targets = test_y[row];
+            double accuracy = 0.0;
+            for(int i = 0 ; i < outputs.size() ; i++){
+                accuracy += std::abs(outputs[i] - targets[i]);
+            }
+            total_accuracy += accuracy;
+        }
+        return total_accuracy / test_X.size();
+    }
+
+
+    void NeuralNetwork::gradient_search(const std::vector<std::vector<double>>& train_X, const std::vector<std::vector<double>>& train_y){
+        //for each epoch
+        for(int epoch = 0 ; epoch < hyperparams.epochs ; epoch++){
+            //for each row (input to target pair) in the training set
+            for(int train_data = 0 ; train_data < train_X.size() ; train_data++){
+                std::vector<double> outputs = feed(train_X[train_data]);  
+                std::vector<double> targets = train_y[train_data];
+
+                double total_error = LossFunction::mean_squared_error(outputs, targets);
+                //std::cout<<"total error: "<<total_error<<std::endl;
+
+                //TODO
+
+            }
         }
     }
 
 
-
-    void NeuralNetwork::train(const Tenser<double>& trainset){}
-    double NeuralNetwork::test(const Tenser<double>& testset){return 0;}
-    double NeuralNetwork::test(const std::vector<std::vector<double>>& test_X, const std::vector<std::vector<double>>& test_y){return 0.0;}
 }
     

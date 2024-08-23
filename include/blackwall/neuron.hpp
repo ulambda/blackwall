@@ -100,6 +100,9 @@ namespace BLKW{
              * @return size of the neuron
              */
             int get_size() const;
+
+            
+            void update();
     };
 }
 

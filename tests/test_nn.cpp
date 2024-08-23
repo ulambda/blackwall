@@ -80,18 +80,29 @@ void test5(){
     };
     nn.train(inputs, outputs);
     std::cout<<"\n";
-    nn.train(inputs, outputs);
-    std::cout<<"\n";
-    nn.train(inputs, outputs);
-    
+
     PRINT("test 5 passed");
 
+}
+
+void test6(){
+    BLKW::NeuralNetwork nn(2, {2}, 1);
+    std::vector<std::vector<double>> inputs = {
+        {0, 0}, {0, 1}, {1, 0}, {1, 1}
+    };
+    std::vector<std::vector<double>> outputs = {
+        {0}, {1}, {1}, {0}
+    };
+    int acc = nn.test(inputs, outputs);
+    std::cout<<"accuracy: "<<acc<<"\n";
+    PRINT("test 6 passed");
 }
 
 int main(void){
     //test1();
     //test3();
     //test4();
-    test5();
+    //test5();
+    test6();
     return 0;
 }
